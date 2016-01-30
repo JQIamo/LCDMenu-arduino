@@ -75,6 +75,7 @@ class LCDMenuItem
 	*/
 	LCDMenuItem(LCDMenuItem * parent, int index);
 	
+	LCDMenuItem(LCDMenuItem * parent, int index, dtext_t displayText);
 	
 	//! Adds an action callback function to the given menu
 	/*!

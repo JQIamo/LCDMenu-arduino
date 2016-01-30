@@ -44,8 +44,27 @@ void LCDMenu::action(menu_action_t action){
 		// pass displayText to callback for currentMenu
 		_currentMenu->executeActionCallback(displayText, action);
 	} else {
-	
 		// default action
+		switch (action){
+		
+		case LEFT_ACTION:
+			this->advanceNext();
+			break;
+		case RIGHT_ACTION:
+			this->advancePrevious();
+			break;
+			
+		case PUSH_ACTION:
+			this->advanceChild();
+			break;
+		
+		case HOLD_ACTION:
+			
+			break;
+		default:
+			displayText[0] = "something odd";
+		}
+		
 	}
 	
 	// pass display text to the write LCD function
@@ -109,11 +128,15 @@ void LCDMenu::advancePrevious(){
 }
 
 void LCDMenu::advanceParent(){
+	// check if has parent
 	if (_currentMenu->hasParent()){
 		_currentMenu = _currentMenu->getParent();
 	}
 }
 
 void LCDMenu::advanceChild(){
-	_currentMenu = _currentMenu->getChild(0);
+	// check if there are any children
+	if (_currentMenu->childrenCount() > 0){
+		_currentMenu = _currentMenu->getChild(0);
+	}
 }

@@ -24,10 +24,29 @@ LCDMenuItem::LCDMenuItem(LCDMenuItem * parent, int index) :
 	_parent(0),
 	_index(0),
 	_numChildren(0),
-	_displayText({"Menu Item", ""}),
 	_actionCallback(0)
 {
 
+	_index = index;
+	_parent = parent;
+	_displayText[0] = "Menu Item";
+	_displayText[1] = "";
+	
+	// check that parent not Null; add as child menu
+	if(_parent != 0){
+		_parent->addChild(this, index);
+	}
+ 	
+}
+
+
+	
+LCDMenuItem::LCDMenuItem(LCDMenuItem * parent, int index, dtext_t displayText) :
+	_parent(0),
+	_index(0),
+	_numChildren(0),
+	_actionCallback(0)
+{
 	_index = index;
 	_parent = parent;
 	
@@ -36,7 +55,12 @@ LCDMenuItem::LCDMenuItem(LCDMenuItem * parent, int index) :
 		_parent->addChild(this, index);
 	}
  	
+ 	
+	//memcpy(_displayText, displayText, sizeof(displayText)); 
+	// for some reason, saying memcpy not defined in this scope... ugh.
+	memcpy(_displayText[0], displayText[0], sizeof(displayText[0]));
 }
+	
 
 
 void LCDMenuItem::addActionCallback(ActionCallback callback){
@@ -48,6 +72,9 @@ void LCDMenuItem::executeActionCallback(dtext_t displayText, menu_action_t actio
 	if (this->hasActionCallback()){
 		// execute said callback function.
 		(*_actionCallback)(displayText, action);
+	} else {
+		// otherwise, display default text
+		displayText = _displayText;
 	}
 }
 
